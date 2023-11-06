@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Money Transfer App</title>
+    <link rel="stylesheet" href="https://unpkg.com/mvp.css">
+</head>
+<body>
+    <h1>Money Transfer App</h1>
+
+    <ul>
+        <li><a href="#" onclick="showPage('login')">Login</a></li>
+        <li><a href="#" onclick="showPage('register')">Register</a></li>
+        <li><a href="#" onclick="showPage('dashboard')">Dashboard</a></li>
+        <li><a href="#" onclick="showPage('transfer')">Transfer Money</a></li>
+        <li><a href="#" onclick="showPage('history')">Transaction History</a></li>
+    </ul>
+
+    <div id="login" style="display: none;">
+        <h2>Login</h2>
+        <input type="text" id="loginUsername" placeholder="Username" required><br><br>
+        <input type="password" id="loginPassword" placeholder="Password" required><br><br>
+        <button onclick="login()">Login</button>
+    </div>
+
+    <div id="register" style="display: none;">
+        <h2>Registration</h2>
+        <input type="text" id="registerUsername" placeholder="Username" required><br><br>
+        <input type="password" id="registerPassword" placeholder="Password" required><br><br>
+        <button onclick="register()">Register</button>
+    </div>
+
+    <div id="dashboard" style="display: none;">
+        <h2>Welcome, <span id="loggedInUser"></span>!</h2>
+        <p>Your balance: $<span id="userBalance"></span></p>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <div id="transfer" style="display: none;">
+        <h2>Transfer Money</h2>
+        <input type="text" id="recipientUsername" placeholder="Recipient Username" required><br><br>
+        <input type="number" id="transferAmount" placeholder="Amount to Transfer" required><br><br>
+        <button onclick="transferMoney()">Transfer</button>
+    </div>
+
+    <div id="history" style="display: none;">
+        <h2>Transaction History</h2>
+        <ul id="transactionList"></ul>
+        <button onclick="goToDashboard()">Back to Dashboard</button>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let users = [
+            { username: "user1", password: "password1", balance: 1000 },
+            { username: "user2", password: "password2", balance: 500 },
+        ];
+        let transactions = [];
+
+        function showPage(pageId) {
+            const pages = ["login", "register", "dashboard", "transfer", "history"];
+            for (const page of pages) {
+                const pageElement = document.getElementById(page);
+                if (page === pageId) {
+                    pageElement.style.display = "block";
+                } else {
+                    pageElement.style.display = "none";
+                }
+            }
+        }
+
+        function login() {
+            const username = document.getElementById("loginUsername").value;
+            const password = document.getElementById("loginPassword").value;
+
+            currentUser = users.find(user => user.username === username && user.password === password);
+
+            if (currentUser) {
+                showPage("dashboard");
+                document.getElementById("loggedInUser").textContent = currentUser.username;
+                document.getElementById("userBalance").textContent = currentUser.balance.toFixed(2);
+            } else {
+                alert("Invalid username or password.");
+            }
+        }
+
+        function register() {
+            const newUsername = document.getElementById("registerUsername").value;
+            const newPassword = document.getElementById("registerPassword").value;
+
+            if (users.some(user => user.username === newUsername)) {
+                alert("Username already exists. Please choose a different one.");
+                return;
+            }
+
+            const newUser = { username: newUsername, password: newPassword, balance: 0 };
+            users.push(newUser);
+            currentUser = newUser;
+
+            showPage("dashboard");
+            document.getElementById("loggedInUser").textContent = currentUser.username;
+            document.getElementById("userBalance").textContent = currentUser.balance.toFixed(2);
+        }
+
+        function logout() {
+            currentUser = null;
+            showPage("login");
+        }
+
+        function transferMoney() {
+            const recipientUsername = document.getElementById("recipientUsername").value;
+            const transferAmount = parseFloat(document.getElementById("transferAmount").value);
+
+            const recipientUser = users.find(user => user.username === recipientUsername);
+
+            if (!recipientUser || isNaN(transferAmount) || transferAmount <= 0) {
+                alert("Invalid recipient or amount.");
+                return;
+            }
+
+            if (currentUser.balance >= transferAmount) {
+                currentUser.balance -= transferAmount;
+                recipientUser.balance += transferAmount;
+
+                transactions.push({ sender: currentUser.username, recipient: recipientUsername, amount: transferAmount });
+
+                document.getElementById("userBalance").textContent = currentUser.balance.toFixed(2);
+                alert("Transfer successful.");
+            } else {
+                alert("Insufficient balance.");
+            }
+        }
+
+        function goToDashboard() {
+            showPage("dashboard");
+        }
+        function showPage(pageId) {
+            const pages = ["login", "register", "dashboard", "transfer", "history"];
+            for (const page of pages) {
+                const pageElement = document.getElementById(page);
+                if (page === pageId) {
+                    pageElement.style.display = "block";
+                    if (page === "history") {
+                        populateTransactionHistory();
+                    }
+                } else {
+                    pageElement.style.display = "none";
+                }
+            }
+        }
+
+        function populateTransactionHistory() {
+            const transactionList = document.getElementById("transactionList");
+            transactionList.innerHTML = "";
+
+            transactions.forEach(transaction => {
+                const li = document.createElement("li");
+                li.textContent = `Sent $${transaction.amount.toFixed(2)} to ${transaction.recipient}`;
+                transactionList.appendChild(li);
+            });
+        }
+    </script>
+</body>
+</html>
