@@ -1,12 +1,14 @@
 # MONEY TRANSFER
-SOFTWARE REQUIREMENTS SPECIFICATION
--- TEAM MEMBERS ( B.TECH IT ) --
-college - gojan school of business and technology
-1.MANIKANDAN S
-2.MOHAMMED RIZWAN R
-3.POOVARASAN M
-4.VENKATASUBRAMANI R
 
+-- TEAM MEMBERS ( B.TECH IT ) --
+
+**college - gojan school of business and technology**
+- MANIKANDAN S
+- MOHAMMED RIZWAN R
+- POOVARASAN M
+- VENKATASUBRAMANI R
+
+[money transfer app : live link](https://moneytransfer05.netlify.app)
 # introduction
 We are going to build a “money transfer” application based on full-stack in java
 The software is designed to facilitate money transfers between users.
