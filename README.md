@@ -3,10 +3,10 @@
 -- TEAM MEMBERS ( B.TECH IT ) --
 
 **college - gojan school of business and technology**
-- MANIKANDAN S
-- MOHAMMED RIZWAN R
-- POOVARASAN M
-- VENKATASUBRAMANI R
+- MANIKANDAN S - {nm id : au110520205012}
+- MOHAMMED RIZWAN R - {nm id : au110520205015}
+- POOVARASAN M - {nm id : au110520205310}
+- VENKATASUBRAMANI R - {nm id : au110520205312}
 
 [money transfer app : live link](https://moneytransfer05.netlify.app)
 # introduction
